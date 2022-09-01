@@ -1,0 +1,20 @@
+
+.list-header-image image {
+	width: 65rpx;
+	height: 65rpx;
+}
+.list-header-name view {
+	line-height: 1.5;
+}
+.list-header-btn {
+	width: 90rpx;
+	height: 50rpx;
+}
+.list-body-image image {
+	width: 710rpx;
+	height: 350rpx;
+}
+.active {
+	color: #fd597c;
+}
+
