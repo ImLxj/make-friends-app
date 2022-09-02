@@ -111,23 +111,54 @@
 			"style": {
 				"navigationBarTitleText": "话题分类"
 			}
-		}
-		,{
-				"path" : "pages/topic-detail/topic-detail",
-				"style" : {
-					"app-plus": {
-						"titleNView": {
-							"type": "transparent", // 渐变颜色
-							"buttons": [
-								{
-									"type": "menu"
-								}
-							]
-						}
+		},
+		{
+			"path" : "pages/topic-detail/topic-detail",
+			"style" : {
+				"app-plus": {
+					"titleNView": {
+						"type": "transparent", // 渐变颜色
+						"buttons": [
+							{
+								"type": "menu"
+							}
+						]
 					}
-				}                                                                               
+				}
+			}                                                                               
+		},
+		{
+			"path": "pages/user-list/user-list",
+			"style": {
+				"app-plus": {
+					"animationType": "slide-in-left", // 窗口从左边进入
+					// 导航栏配置
+					"titleNView": {
+						"autoBackButton": false,  // 只适用于app端 不适用于pc端
+						// 搜索框配置
+						"searchInput": {
+							"align": "center",
+							"placeholder": "搜索用户",
+							"placeholderColor": "#212121",
+							"backgroundColor": "#F5F4F2",
+							"borderRadius": "5px",
+							"disabled": true
+						},
+						// 按钮配置
+						"buttons": [
+							{
+								"color": "#212121",
+								"colorPressed": "#FC5C82",
+								"float": "right",
+								"fontSize": "15px",
+								"text": "取消"
+							}
+						]
+					}
+				}
 			}
-    ],
+		}
+  ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "社区交友",

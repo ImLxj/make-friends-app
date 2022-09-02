@@ -88,6 +88,10 @@
 				case 0:
 					// 关闭弹出层
 					this.$refs.popup.close()
+					// 打开用户界面
+					uni.navigateTo({
+						url: '/pages/user-list/user-list'
+					})
 					break;
 				case 1:
 					// 打开弹出层
