@@ -2,7 +2,8 @@
 	<view>
 		<view
 			class="px-2" 
-			hover-class="bg-light">
+			hover-class="bg-light"
+			@click="openMessage">
 			<view class="flex align-center border-bottom pb-1 mt-1">
 				<image
 					:src="item.avatar" 
@@ -42,6 +43,13 @@
 		filters: {
 			formatTime(value) {
 				return $T.gettime(value)
+			}
+		},
+		methods: {
+			openMessage() {
+				uni.navigateTo({
+					url: '/pages/user-chat/user-chat'
+				})
 			}
 		}
 	}

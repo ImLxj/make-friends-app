@@ -157,6 +157,25 @@
 					}
 				}
 			}
+		},
+		{
+			"path": "pages/user-chat/user-chat",
+			"style": {
+				"app-plus": {
+					"bounce": "none",
+					"titleNView": {
+						"buttons": [
+							{
+							"color": "#212121",
+							"float": "right",
+							"fontSize": "20px",
+							"fontSrc": "/static/iconfont.ttf",
+							"text": "\ue628"
+							}
+						]
+					}
+				}
+			}
 		}
   ],
 	"globalStyle": {
