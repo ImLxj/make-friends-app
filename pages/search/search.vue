@@ -15,16 +15,29 @@
 		<!-- 搜索内容 -->
 		<template v-else>
 			<block v-for="(item, index) in searchData" :key="index">
-				<common-list :item="item" :index="index"></common-list>
+				<template v-if="type === 'post'">
+					<!-- 帖子 -->
+					<common-list :item="item" :index="index"></common-list>
+				</template>
+				<template v-else-if="type === 'topic'">
+					<!-- 话题 -->
+					<topic-list :item="item" :index="index"></topic-list>
+				</template>
+				<template v-else>
+					<!-- 用户 -->
+					<user-list :list="item" :index="index"></user-list>
+				</template>
 			</block>
 		</template>
 	</view>
 </template>
 
 <script>
-	import CommonList from '@/components/common/common-list.vue';
+	import commonList from '@/components/common/common-list.vue';
+	import userList from '@/components/user-list/user-list.vue'
+	import topicList from '@/components/topic-detail/topic-list.vue'
 	// 测试数据
-	const dome = [
+	const dome1 = [
 		{
 			username: '王五', // 用户名
 			userpic: '/static/default.jpg', // 用户头像
@@ -71,13 +84,179 @@
 			share_num: 2
 		}
 	]
+	const dome2 = [
+		{
+			cover: '/static/demo/demo5.jpg',
+			title: 'JavaScript高级',
+			desc: '节流与防抖',
+			today_count: 10,
+			news_count: 0
+		},
+		{
+			cover: '/static/demo/demo5.jpg',
+			title: 'JavaScript高级',
+			desc: '节流与防抖',
+			today_count: 10,
+			news_count: 0
+		},
+		{
+			cover: '/static/demo/demo5.jpg',
+			title: 'JavaScript高级',
+			desc: '节流与防抖',
+			today_count: 10,
+			news_count: 0
+		},
+		{
+			cover: '/static/demo/demo5.jpg',
+			title: 'JavaScript高级',
+			desc: '节流与防抖',
+			today_count: 10,
+			news_count: 0
+		},
+		{
+			cover: '/static/demo/demo5.jpg',
+			title: 'JavaScript高级',
+			desc: '节流与防抖',
+			today_count: 10,
+			news_count: 0
+		},
+		{
+			cover: '/static/demo/demo5.jpg',
+			title: 'JavaScript高级',
+			desc: '节流与防抖',
+			today_count: 10,
+			news_count: 0
+		},
+		{
+			cover: '/static/demo/demo5.jpg',
+			title: 'JavaScript高级',
+			desc: '节流与防抖',
+			today_count: 10,
+			news_count: 0
+		},
+		{
+			cover: '/static/demo/demo5.jpg',
+			title: 'JavaScript高级',
+			desc: '节流与防抖',
+			today_count: 10,
+			news_count: 0
+		},
+		{
+			cover: '/static/demo/demo5.jpg',
+			title: 'JavaScript高级',
+			desc: '节流与防抖',
+			today_count: 10,
+			news_count: 0
+		},
+		{
+			cover: '/static/demo/demo5.jpg',
+			title: 'JavaScript高级',
+			desc: '节流与防抖',
+			today_count: 10,
+			news_count: 0
+		},
+		{
+			cover: '/static/demo/demo5.jpg',
+			title: 'JavaScript高级',
+			desc: '节流与防抖',
+			today_count: 10,
+			news_count: 0
+		},
+	]
+	const dome3 = [
+		{
+			avatar: '/static/demo/userpic/2.jpg',
+			username: 'ciyaya',
+			sex: 1,
+			age: 24,
+			isFollow: true
+		},
+		{
+			avatar: '/static/demo/userpic/2.jpg',
+			username: 'ciyaya',
+			sex: 1,
+			age: 28,
+			isFollow: true
+		},
+		{
+			avatar: '/static/demo/userpic/2.jpg',
+			username: 'ciyaya',
+			sex: 0,
+			age: 24,
+			isFollow: true
+		},
+		{
+			avatar: '/static/demo/userpic/2.jpg',
+			username: 'ciyaya',
+			sex: 0,
+			age: 24,
+			isFollow: true
+		},
+		{
+			avatar: '/static/demo/userpic/2.jpg',
+			username: 'ciyaya',
+			sex: 0,
+			age: 24,
+			isFollow: false
+		},{
+			avatar: '/static/demo/userpic/2.jpg',
+			username: 'ciyaya',
+			sex: 0,
+			age: 24,
+			isFollow: false
+		},
+		{
+			avatar: '/static/demo/userpic/2.jpg',
+			username: 'ciyaya',
+			sex: 0,
+			age: 24,
+			isFollow: false
+		},{
+			avatar: '/static/demo/userpic/2.jpg',
+			username: 'ciyaya',
+			sex: 0,
+			age: 24,
+			isFollow: false
+		},
+		{
+			avatar: '/static/demo/userpic/2.jpg',
+			username: 'ciyaya',
+			sex: 0,
+			age: 24,
+			isFollow: false
+		},{
+			avatar: '/static/demo/userpic/2.jpg',
+			username: 'ciyaya',
+			sex: 0,
+			age: 24,
+			isFollow: false
+		},{
+			avatar: '/static/demo/userpic/2.jpg',
+			username: 'ciyaya',
+			sex: 0,
+			age: 24,
+			isFollow: false
+		},
+		{
+			avatar: '/static/demo/userpic/2.jpg',
+			username: 'ciyaya',
+			sex: 0,
+			age: 24,
+			isFollow: false
+		}
+	]
 	export default {
-		components: {CommonList},
+		components: {
+			commonList,
+			userList,
+			topicList
+		},
 		data() {
 			return {
 				searchList: ['JavaScript','HTML+CSS','Vue实战项目','EventLoop事件循环机制'],
 				searchText: '',
-				searchData: []
+				searchData: [],
+				type: 'post'
 			}
 		},
 		// 监听顶部导航input输入的内容，只有点击软键盘的搜索才会触发
@@ -96,6 +275,32 @@
 				this.searchEvent()
 			}
 		},
+		onLoad(e) {
+			if(e.type){
+				this.type = e.type
+			}
+			let pageTitle = '帖子'
+			switch (this.type){
+				case 'post':
+					pageTitle = '帖子'
+					break;
+				case 'topic':
+					pageTitle = '话题'
+					break;
+				case 'user':
+					pageTitle = '用户'
+					break;
+			}
+			// 修改搜索占位
+			// #// #ifdef APP-PLUS
+			let currentWebview = this.$mp.page.$getAppWebview()
+			let tn = currentWebview.getStyle().titleNView
+			tn.searchInput.placeholder = '搜索' + pageTitle
+			currentWebview.setStyle({
+				titleNView: tn
+			})
+			// #endif
+		},
 		methods: {
 			// 监听顶部导航的button事件触发
 			searchEvent() {
@@ -108,7 +313,17 @@
 				})
 				// 发送请求
 				setTimeout(() => {
-					this.searchData = dome
+					switch (this.type){
+						case 'post':
+							this.searchData = dome1
+							break;
+						case 'topic':
+							this.searchData = dome2
+							break;
+						case 'user':
+							this.searchData = dome3
+							break;
+					}
 					// 隐藏loading框
 					uni.hideLoading()
 				}, 2000)

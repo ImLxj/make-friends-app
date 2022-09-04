@@ -123,7 +123,7 @@ export default {
 	// 点击
 	onNavigationBarSearchInputClicked() {
 		uni.navigateTo({
-			url:'/pages/search/search'
+			url:'/pages/search/search?type=post'
 		})
 	},
 	onLoad() {

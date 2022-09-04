@@ -34,7 +34,9 @@
 						<hot-categories :hotCate="hotCate"></hot-categories>
 						<!-- 搜索话题 -->
 						<view class="p-2 my-2">
-							<view class="flex align-center justify-center bg-light py-1 rounded">
+							<view 
+								class="flex align-center justify-center bg-light py-1 rounded"
+								@click="opneSearch">
 								<text class="iconfont icon-sousuo mr-1"></text>	
 								<text>搜索话题</text>
 							</view>
@@ -282,6 +284,12 @@
 					this.list.push(...dome)
 					this.loadText = '上拉加载更多'
 				}, 1000)
+			},
+			// 跳转到搜索页
+			opneSearch() {
+				uni.navigateTo({
+					url:'/pages/search/search?type=topic'
+				})
 			}
 		}
 	}

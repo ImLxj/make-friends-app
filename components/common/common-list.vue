@@ -60,7 +60,9 @@ export default {
 		},
 		// 进入详情页
 		openDetail() {
-			console.log('详情页');
+			uni.navigateTo({
+				url:`/pages/detail/detail?detail=${JSON.stringify(this.item)}`
+			})
 		},
 		onSupport(support) {
 			this.$emit('onSupport', {

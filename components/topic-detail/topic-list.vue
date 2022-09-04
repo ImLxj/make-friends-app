@@ -17,7 +17,10 @@
 
 <script>
 	export default {
-		props: ['item', 'index'],
+		props: {
+			item: Object,
+			index: Number
+		},
 		methods: {
 			// 跳转到话题详情页
 			opneTopicDetail() {

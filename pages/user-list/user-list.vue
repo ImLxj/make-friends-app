@@ -141,7 +141,7 @@
 		// 监听点击搜索框
 		onNavigationBarSearchInputClicked() {
 			uni.navigateTo({
-				url:'/pages/search/search'
+				url:'/pages/search/search?type=user'
 			})
 		},
 		// 监听点击取消按钮

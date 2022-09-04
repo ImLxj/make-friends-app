@@ -111,6 +111,9 @@
 			popupEvent(value) {
 				switch (value){
 					case 'friend':
+						uni.navigateTo({
+							url:'/pages/search/search?type=user'
+						})
 						break;
 					case 'clear':
 						break;
