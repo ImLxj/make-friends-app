@@ -17,31 +17,15 @@
 				</block>
 			</scroll-view>
 			<!-- 底部操作条 -->
-			<view 
-				class="fixed-bottom flex align-center border-top bg-white px-2"
-				style="height: 100rpx;">
-				
-				<input 
-					type="text" 
-					v-model="content" 
-					placeholder="文明发言" 
-					class="flex-1 rounded bg-light py-1 px-2"
-					@confirm="submit">
-				<view 
-					class="flex align-center justify-center animated" 
-					style="width: 100rpx;" 
-					hover-class="jello"
-					@click="submit"> 
-					<text class="iconfont icon-fabu font-lg"></text>
-				</view>
-			</view>
+			<bottom-input @submit="submit"></bottom-input>
 	</view>
 </template>
 
 <script>
 	import userChat from '@/components/user-char/user-chat.vue'
+	import bottomInput from '@/components/common/bottom-input.vue'
 	export default {
-		components: {userChat},
+		components: {userChat, bottomInput},
 		data() {
 			return {
 				scrollH: 500,
@@ -161,23 +145,18 @@
 		},
 		methods: {
 			// 发送消息
-			submit() {
+			submit(data) {
 				let obj = {
 					user_id: '110',
 					username: '呲牙',
 					avatar: '/static/demo/userpic/15.jpg',
 					type: 'text',
-					data: this.content,
+					data: data,
 					create_time: new Date().getTime()
 				}
-				if(this.content === '') {
-					return uni.showToast({
-						title:"消息不能为空",
-						icon :'none'
-					})
-				}
+
 				this.list.push(obj)
-				this.content = ''
+
 				// 发送完消息之后滚动到底部
 				this.pageToBottom()
 			},
