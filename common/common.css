@@ -1,6 +1,9 @@
 /* 本项目全局的css */
 .bj-main {
-	background-color: #fd597c;
+	background-color: #fd597c !important;
+}
+.bj-main-disabled {
+	background-color: #fd9496 !important;
 }
 .text-main {
 	color: #fd597c;
