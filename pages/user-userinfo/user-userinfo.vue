@@ -23,27 +23,29 @@
 					<text class="iconfont icon-bianji1"></text>
 				</view>
 			</uni-list-item>
-			<uni-list-item :border="false" title="生日">
-				<view slot="footer">
-					<text class="font-sm text-muted mr-1">2022-1-3</text>
-					<text class="iconfont icon-bianji1"></text>
-				</view>
-			</uni-list-item>
+			<picker mode="date" :value="birthday" @change="changeBirthday">
+				<uni-list-item :border="false" title="生日">
+					<view slot="footer">
+						<text class="font-sm text-muted mr-1">{{birthday}}</text>
+						<text class="iconfont icon-bianji1"></text>
+					</view>
+				</uni-list-item>
+			</picker>
 			<uni-list-item :border="false" title="情感">
-				<view slot="footer">
-					<text class="font-sm text-muted mr-1">未婚</text>
+				<view slot="footer" @click="changEmotion">
+					<text class="font-sm text-muted mr-1">{{emotionText}}</text>
 					<text class="iconfont icon-bianji1"></text>
 				</view>
 			</uni-list-item>
 			<uni-list-item :border="false" title="职业">
-				<view slot="footer">
-					<text class="font-sm text-muted mr-1">学生</text>
+				<view slot="footer" @click="changeProfession">
+					<text class="font-sm text-muted mr-1">{{professionText}}</text>
 					<text class="iconfont icon-bianji1"></text>
 				</view>
 			</uni-list-item>
 			<uni-list-item :border="false" title="家乡">
-				<view slot="footer">
-					<text class="font-sm text-muted mr-1">山东济宁</text>
+				<view slot="footer" @click="openPicker">
+					<text class="font-sm text-muted mr-1">{{ pickerText }}</text>
 					<text class="iconfont icon-bianji1"></text>
 				</view>
 			</uni-list-item>
@@ -57,26 +59,62 @@
 				完成
 			</button>
 		</view>
+		<mpvue-city-picker 
+			:themeColor="themeColor" 
+			ref="mpvueCityPicker" 
+			:pickerValueDefault="cityPickerValueDefault"
+			@onConfirm="onConfirm">
+		</mpvue-city-picker>
 	</view>
 </template>
 
 <script>
 	let sexArray = ['不限', '男', '女']
+	let emotionArray = ['不知', '已婚', '未婚']
+	let professionArray = ['IT', '其他', '学生']
 	import uniList from '@/components/uni-ui/uni-list/components/uni-list/uni-list.vue'
+	import mpvueCityPicker from '@/components/uni-ui/mpvue-citypicker/mpvueCityPicker.vue'
 	export default {
 		components: {
-			uniList
+			uniList,
+			mpvueCityPicker
 		},
 		data() {
 			return {
 				userpic: '/static/demo/demo66.jpg',
 				username: '小拿',
-				sexNum: 0	
+				sexNum: 0	,
+				emotionNum: 0,
+				professionNum: 0,
+				birthday: '2022-12-31',
+				cityPickerValueDefault: [0, 0, 1],
+				themeColor: '#007AFF',
+				pickerText: '请选择住址'
 			}
 		},
 		computed: {
 			sexText() {
 				return sexArray[this.sexNum]
+			},
+			emotionText() {
+				return emotionArray[this.emotionNum]
+			},
+			professionText() {
+				return professionArray[this.professionNum]
+			}
+		},
+		// 当点击返回按钮关闭三级联动
+		onBackPress() {
+			if(this.$refs.mpvueCityPicker.showPicker) {
+				this.$refs.mpvueCityPicker.pickerCancel()
+				return true
+			}
+		},
+		// 当退出当前页面的时候关闭三级联动
+		onUnload() {
+			if(this.$refs.mpvueCityPicker.showPicker) {
+				this.$refs.mpvueCityPicker.pickerCancel()
+				return true
 			}
 		},
 		methods: { 
@@ -99,6 +137,36 @@
 						this.sexNum = res.tapIndex
 					}
 				});
+			},
+			// 修改情感
+			changEmotion() {
+				uni.showActionSheet({
+					itemList: emotionArray,
+					success: (res) => {
+						this.emotionNum = res.tapIndex
+					}
+				});
+			},
+			// 修改职业
+			changeProfession() {
+				uni.showActionSheet({
+					itemList: professionArray,
+					success: (res) => {
+						this.professionNum = res.tapIndex
+					}
+				});
+			},
+			// 修改生日
+			changeBirthday(e) {
+				this.birthday = e.detail.value
+			},
+			// 三级联动取消
+			onConfirm(e) {
+				this.pickerText = e.label
+			},
+			// 打开三级联动
+			openPicker() {
+				this.$refs.mpvueCityPicker.show()
 			}
 		}
 	}

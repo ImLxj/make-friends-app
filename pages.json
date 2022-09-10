@@ -34,7 +34,6 @@
 					"titleNView": false
 				}
 			}
-
 		}, 
 		{
 			"path": "pages/message/message",
@@ -69,6 +68,7 @@
 		{
 			"path": "pages/my/my",
 			"style": {
+				"enablePullDownRefresh": false,
 				"navigationBarTitleText": "我的",
 				"app-plus": {
 					"titleNView": {
@@ -84,6 +84,7 @@
 		{
 			"path": "pages/search/search",
 			"style": {
+				"enablePullDownRefresh": false,
 				"app-plus": {
 					// 导航栏配置
 					"titleNView": {
@@ -126,6 +127,7 @@
 		{
 			"path" : "pages/topic-detail/topic-detail",
 			"style" : {
+				"enablePullDownRefresh": false,
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent", // 渐变颜色
@@ -141,6 +143,7 @@
 		{
 			"path": "pages/user-list/user-list",
 			"style": {
+				"enablePullDownRefresh": false,
 				"app-plus": {
 					"animationType": "slide-in-left", // 窗口从左边进入
 					// 导航栏配置
@@ -172,6 +175,7 @@
 		{
 			"path": "pages/user-chat/user-chat",
 			"style": {
+				"enablePullDownRefresh": false,
 				"app-plus": {
 					"bounce": "none",
 					"titleNView": {
@@ -191,6 +195,7 @@
 		{
 			"path" : "pages/detail/detail",
 			"style" : {
+				"enablePullDownRefresh": false,
 				"app-plus": {
 					"titleNView": {
 						"buttons": [
@@ -206,13 +211,15 @@
 		{
 			"path" : "pages/user-set/user-set",
 			"style" : {
-					"navigationBarTitleText": "设置"
+					"navigationBarTitleText": "设置",
+					"enablePullDownRefresh": false
 			}	
 		},
 		{
 			"path": "pages/user-password/user-password",
 			"style": {
-				"navigationBarTitleText": "修改密码"
+				"navigationBarTitleText": "修改密码",
+				"enablePullDownRefresh": false
 			}
 		}
 		,{
@@ -226,10 +233,28 @@
 		{
 			"path": "pages/user-userinfo/user-userinfo",
 			"style": {
-				"navigationBarTitleText": "修改资料"
+				"navigationBarTitleText": "修改资料",
+				"enablePullDownRefresh": false
 			}
 		}
-  ],
+		,{
+			"path" : "pages/user-feedback/user-feedback",
+			"style" :                                                                                    
+			{
+					"navigationBarTitleText": "意见反馈",
+					"enablePullDownRefresh": false
+			}
+			
+		}
+		,{
+			"path" : "pages/about/about",
+			"style" :                                                                                    
+			{
+					"navigationBarTitleText": "关于社区",
+					"enablePullDownRefresh": false
+			}
+		}
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "社区交友",

@@ -32,12 +32,14 @@
 				:border="false" 
 				clickable
 				showArrow
+				@click="open('user-feedback')"
 				title="意见反馈">
 			</uni-list-item>
 			<uni-list-item 
 				:border="false" 
 				clickable
 				showArrow
+				@click="open('about')"
 				title="关于社区">
 			</uni-list-item>
 		</uni-list>
