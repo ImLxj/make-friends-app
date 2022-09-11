@@ -253,6 +253,14 @@
 					"navigationBarTitleText": "关于社区",
 					"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path": "pages/login/login",
+			"style": {
+				"app-plus": {
+					"titleNView": false					
+				}
+			}
 		}
 	],
 	"globalStyle": {

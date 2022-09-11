@@ -1,18 +1,20 @@
 <template>
 	<view>
 		<!-- 个人信息 -->
-		<view class="flex align-center p-2" hover-class="bg-light">
-			<image 
-				src="/static/demo/demo6.jpg" 
-				style="width: 100rpx; height: 100rpx;"
-				class="rounded-circle mr-2">
-			</image>
-			<view class="flex flex-column flex-1">
-				<text class="font-md font-weight-bold text-dark">张三</text>
-				<text class="font-sm text-muted">总帖子 10 今日发帖 0</text>
+		<navigator url="/pages/login/login">
+			<view class="flex align-center p-2" hover-class="bg-light">
+				<image 
+					src="/static/demo/demo6.jpg" 
+					style="width: 100rpx; height: 100rpx;"
+					class="rounded-circle mr-2">
+				</image>
+				<view class="flex flex-column flex-1">
+					<text class="font-md font-weight-bold text-dark">张三</text>
+					<text class="font-sm text-muted">总帖子 10 今日发帖 0</text>
+				</view>
+				<text class="iconfont icon-jinru"></text>
 			</view>
-			<text class="iconfont icon-jinru"></text>
-		</view>
+		</navigator>
 		<!-- 帖子数量 -->
 		<view class="flex align-center px-3 py-2">
 			<view 
