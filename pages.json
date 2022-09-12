@@ -261,6 +261,22 @@
 					"titleNView": false					
 				}
 			}
+		},
+		{
+			"path": "pages/user-space/user-space",
+			"style": {
+				"navigationBarTitleText": "个人空间",
+				"app-plus": {
+					"bounce": "none",
+					"titleNView": {
+						"buttons": [
+							{
+								"type": "menu"
+							}
+						]
+					}
+				}
+			}
 		}
 	],
 	"globalStyle": {

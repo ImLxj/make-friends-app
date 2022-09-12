@@ -1,5 +1,5 @@
 <template>
-	<view class="p-2">
+	<view class="p-2 animated fast fadeIn">
 		<!-- 头像昵称 | 关注按钮 -->
 		<view class="flex align-center justify-between">
 			<!-- 头像 -->
@@ -86,7 +86,9 @@ export default {
 	methods: {
 		// 打开个人空间
 		openSpace() {
-			console.log('个人空间');
+			uni.navigateTo({
+				url: '/pages/user-space/user-space'
+			})
 		},
 		// 关注
 		follow() {

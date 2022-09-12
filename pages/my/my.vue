@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="animated fast fadeIn">
 		<!-- 个人信息 -->
 		<navigator url="/pages/login/login">
 			<view class="flex align-center p-2" hover-class="bg-light">

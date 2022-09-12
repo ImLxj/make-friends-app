@@ -9,6 +9,14 @@ Vue.component('divider', divider)
 import noThing from './components/common/noThing.vue'
 Vue.component('no-thing', noThing)
 
+// 引入配置文件
+import $C from './common/config.js'
+Vue.prototype.$C = $C
+
+// 挂载工具库
+import util from './common/util/index'
+Vue.prototype.$U = util
+
 App.mpType = 'app'
 const app = new Vue({
     ...App

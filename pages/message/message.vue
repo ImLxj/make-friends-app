@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="animated fast fadeIn">
 		<template v-if="msgList.length > 0">
 			<block v-for="(item, index) in msgList" :key="index">
 				<message-list :item="item" :index="index"></message-list>
