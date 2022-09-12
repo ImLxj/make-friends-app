@@ -1,6 +1,6 @@
 export default {
 	// api 请求前缀
-	webUrl: 'http://ceshi2.dishait.cn/api/v1',
+	webUrl: 'http://39.108.147.245:5001/api/v1',
 	// websocket 地址
-	websocketUrl: 'http://ceshi2.dishait.cn/wss'
+	websocketUrl: ''
 }

@@ -92,8 +92,11 @@ export default {
 		},
 		// 关注
 		follow() {
-			// 向父组件传递参数
-			this.$emit('follow', this.index);
+			// 权限验证
+			this.auth(() => {
+				// 向父组件传递参数
+				this.$emit('follow', this.index);
+			})
 		},
 		// 进入详情页
 		openDetail() {
@@ -105,9 +108,11 @@ export default {
 		},
 		// 踩/ 顶
 		onSupport(support) {
-			this.$emit('onSupport', {
-				type: support,
-				index: this.index
+			this.auth(() => {
+				this.$emit('onSupport', {
+					type: support,
+					index: this.index
+				})
 			})
 		},
 		// 进入评论页面

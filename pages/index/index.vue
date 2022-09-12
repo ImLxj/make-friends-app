@@ -152,14 +152,14 @@ export default {
 			this.scrollInto = 'tab' + this.tabIndex
 		},
 		follow(index) {
-			this.list[index].isFollow = true;
+			this.pageList[this.tabIndex].list[index].isFollow = true;
 			// 成功弹框
 			uni.showToast({
 				title: '关注成功'
 			});
 		},
 		onSupport(e) {
-			let item = this.list[e.index];
+			let item = this.pageList[this.tabIndex].list[e.index]
 			let msg = e.type === 'support' ? '顶' : '踩';
 			if (item.support.type === '') {
 				item.support[e.type + '_count']++;
@@ -179,7 +179,9 @@ export default {
 			})
 		},
 		// 获取数据
-		getData() {
+		async getData() {
+			const res = await this.$H.get('/postclass')
+			console.log('@@',res);
 			let arr = []
 			let obj = {}
 			for(let i = 0; i < this.tabBars.length; i ++) {
@@ -207,7 +209,7 @@ export default {
 		},
 		// 监听顶部导航按钮的点击事件
 		onNavigationBarButtonTap() {
-			uni.navigateTo({
+			this.navigateTo({
 				url: '/pages/app-input/app-input'
 			})
 		}
