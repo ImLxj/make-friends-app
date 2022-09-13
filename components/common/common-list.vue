@@ -14,7 +14,7 @@
 				<!-- 昵称和发布时间 -->
 				<view class="list-header-name">
 					<view class="font">{{ item.username }}</view>
-					<text class="font-sm text-light-muted">{{ item.newstime }}</text>
+					<text class="font-sm text-light-muted">{{item.newstime|formatTime }}</text>
 				</view>
 			</view>
 			<view 
@@ -71,6 +71,7 @@
 </template>
 
 <script>
+import $T from '@/common/time.js'
 export default {
 	props: {
 		item: Object,
@@ -129,7 +130,12 @@ export default {
 			}
 			this.$emit('doShare')
 		}
-	}
+	},
+	filters: {
+		formatTime(value) {
+			return $T.gettime(value)
+		}
+	},
 };
 </script>
 

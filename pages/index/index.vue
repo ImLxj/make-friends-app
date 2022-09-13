@@ -14,7 +14,7 @@
 				:id="'tab' + index"
 				:class="tabIndex === index ? 'text-main font-lg font-weight-bold' : ''"
 				@click="changeTab(index)">
-					{{item.name}}
+					{{item.classname}}
 				</view>
 		</scroll-view>
 		<divider></divider>
@@ -40,6 +40,10 @@
 							<!-- 上拉加载 -->
 							<load-more :loadmore="item.loadmore"></load-more>
 						</template>
+						<!-- 加载中 -->
+						<template v-else-if="!item.flastLoad">
+							<view>加载中..</view>
+						</template>
 						<!-- 无数据 -->
 						<template v-else>
 							<no-thing></no-thing>
@@ -53,53 +57,6 @@
 <script>
 import CommonList from '@/components/common/common-list.vue';
 import LoadMore from '@/components/common/loadmore.vue';
-const dome = [
-	{
-		username: '王五', // 用户名
-		userpic: '/static/default.jpg', // 用户头像
-		newstime: '2022-8-28', // 用户更新时间
-		isFollow: false, // 是否关注
-		title: 'JS高级课', // 文章标题
-		titlepic: '/static/demo/datapic/27.jpg', // 文章图片
-		support: {
-			type: 'unsupport',
-			support_count: 1,
-			unsupport_count: 2
-		},
-		comment_count: 3,
-		share_num: 2
-	},
-	{
-		username: '李四', // 用户名
-		userpic: '/static/default.jpg', // 用户头像
-		newstime: '2022-8-28', // 用户更新时间
-		isFollow: false, // 是否关注
-		title: 'JS高级课', // 文章标题
-		titlepic: '', // 文章图片
-		support: {
-			type: 'support',
-			support_count: 1,
-			unsupport_count: 2
-		},
-		comment_count: 3,
-		share_num: 2
-	},
-	{
-		username: '王五', // 用户名
-		userpic: '/static/default.jpg', // 用户头像
-		newstime: '2022-8-28', // 用户更新时间
-		isFollow: false, // 是否关注
-		title: 'JS高级课', // 文章标题
-		titlepic: '/static/demo/datapic/27.jpg', // 文章图片
-		support: {
-			type: 'support',
-			support_count: 1,
-			unsupport_count: 2
-		},
-		comment_count: 3,
-		share_num: 2
-	}
-]
 export default {
 	components: { CommonList, LoadMore },
 	data() {
@@ -107,16 +64,7 @@ export default {
 			scrollH: 0, // 除了头部 底部tabbar 之外的可视窗口的高度
 			scrollInto: "",  
 			tabIndex: 0,
-			tabBars:[
-				{name:'关注'},
-				{name:'推荐'},
-				{name:'体育'},
-				{name:'热点'},
-				{name:'财经'},
-				{name:'娱乐'},
-				{name:'军事'},
-				{name:'历史'},
-			],
+			tabBars:[],
 			pageList: []
 		};
 	},
@@ -144,12 +92,16 @@ export default {
 			}
 			this.tabIndex = index  // 如果没有高亮则证明没有点击则赋值给点击的index
 			this.scrollInto = 'tab' + this.tabIndex // 滚动到当前点击的id
+			this.getList()
  		},
 		// swiper 关联 tab栏 
 		changeSwiperTab(tab) {
 			this.tabIndex = tab.detail.current
 			// 滚动到指定元素
 			this.scrollInto = 'tab' + this.tabIndex
+			if(!this.pageList[this.tabIndex].flastLoad) {
+				this.getList()
+			}
 		},
 		follow(index) {
 			this.pageList[this.tabIndex].list[index].isFollow = true;
@@ -180,32 +132,52 @@ export default {
 		},
 		// 获取数据
 		async getData() {
-			const res = await this.$H.get('/postclass')
-			console.log('@@',res);
+			const {data : res} = await this.$H({
+				url:'/postclass',
+				method: 'GET'
+			})
+			this.tabBars = res.data.list
 			let arr = []
 			let obj = {}
 			for(let i = 0; i < this.tabBars.length; i ++) {
-				obj = {
+				arr.push({
 					loadmore: '上拉加载更多',
-					list:[]
-				}
-				if(i < 3) {
-					obj.list = dome
-				}
-				arr.push(obj)
+					list:[],
+					page: 1,
+					flastLoad: false
+				})
 			}
 			this.pageList = arr
+			if(this.tabBars.length > 0) {
+				this.getList()
+			}
+		},
+		// 获取分类列表
+		async getList() {
+			const index = this.tabIndex
+			let id = this.tabBars[index].id
+			let page = this.pageList[index].page
+			const {data : res} = await this.$H({
+				url: `/postclass/${id}/post/${page}`,
+				method: 'GET'
+			})
+			let list = res.data.list.map(value => {
+				return this.$U.publicList(value)
+			})
+			this.pageList[index].list = (page === 1) ? list : [...this.pageList[index].list, ...list],
+			this.pageList[index].loadmore = list.length < 10 ? '没有更多了' : '上拉加载更多'
+			if(page === 1) {
+				this.pageList[index].flastLoad = true
+			}
 		},
 		// 滚动到底部触发事件
 		loadmore(index) {
 			let item = this.pageList[index]
 			if(item.loadmore !== '上拉加载更多') return 
 			item.loadmore = '加载中...'
-			// 模拟发送请求
-			setTimeout(() => {
-				item.list = [...item.list,...item.list]
-				item.loadmore = '上拉加载更多'
-			}, 1000)
+			// 发送请求
+			item.page ++
+			this.getList()
 		},
 		// 监听顶部导航按钮的点击事件
 		onNavigationBarButtonTap() {

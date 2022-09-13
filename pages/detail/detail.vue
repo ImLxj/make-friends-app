@@ -85,6 +85,8 @@
 			return {
 				screenH: '',
 				info: {
+					id: 0,
+					user_id: 1,
 					username: '王五', // 用户名
 					userpic: '/static/default.jpg', // 用户头像
 					newstime: '2022-8-28', // 用户更新时间
@@ -195,14 +197,21 @@
 		},
 		// 监听顶部导航右侧按钮的点击
 		onNavigationBarButtonTap() {
-			this.$refs.popup.open()
+			this.$refs.popup.open({
+				title: this.info.title,
+				shareText: this.info.content,
+				href: 'https://www.baidu.com',
+				image: this.info.titlepic
+			})
 		},
 		// 监听返回 并对出底部弹出
 		onBackPress() {
 			this.$refs.popup.close()
 		},
 		methods: {
+			// 修改导航栏名称
 			__init(data) {
+				this.info = data
 				uni.setNavigationBarTitle({
 					title: data.title
 				})

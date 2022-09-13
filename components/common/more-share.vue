@@ -15,7 +15,7 @@
 				<view class="font-sm text-light-muted">{{item.name}}</view>
 			</view>
 		</view>
-		<view class="text-center border-top font-md p-2">取消</view>
+		<view class="text-center border-top font-md p-2" @click="close">取消</view>
 	</uni-poput>
 </template>
 
@@ -30,13 +30,20 @@
 		},
 		data() {
 			return {
-				shareType: 1,
-				shareText: 'uni-app可以同时发布成原生App、小程序、H5，邀请你一起体验！'
+				shareType: 0,
+				title: '',
+				shareText: 'uni-app可以同时发布成原生App、小程序、H5，邀请你一起体验！',
+				href: '',
+				image: ''
 			}
 		},
 		// 在组件里面使用， 相当于 vue 生命周期的 created mounted，
 		methods: {
-			open() {
+			open(option) {
+				this.title = option.title
+				this.shareText = option.shareText
+				this.href = option.href
+				this.image = option.image
 				this.$refs.popup.open()
 			},
 			close() {

@@ -17,8 +17,8 @@ import util from './common/util/index'
 Vue.prototype.$U = util
 
 // 挂载发送网络请求
-import http from './common/http/request.js'
-Vue.prototype.$H = http
+import { request } from './common/http/request.js'
+Vue.prototype.$H = request
 
 // 权限验证
 Vue.prototype.auth = (callback) => {

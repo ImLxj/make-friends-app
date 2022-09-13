@@ -349,7 +349,13 @@ var render = function() {
                         }),
                         _c("load-more", { attrs: { _i: "11-" + $31 } })
                       ]
-                    : [_c("no-thing", { attrs: { _i: "13-" + $31 } })]
+                    : _vm._$g("12-" + $31, "e")
+                    ? [
+                        _c("uni-view", { attrs: { _i: "13-" + $31 } }, [
+                          _vm._v("加载中..")
+                        ])
+                      ]
+                    : [_c("no-thing", { attrs: { _i: "15-" + $31 } })]
                 ],
                 2
               )
@@ -8065,9 +8071,19 @@ var render = function() {
         }),
         1
       ),
-      _c("uni-view", { staticClass: _vm._$g(6, "sc"), attrs: { _i: 6 } }, [
-        _vm._v("取消")
-      ])
+      _c(
+        "uni-view",
+        {
+          staticClass: _vm._$g(6, "sc"),
+          attrs: { _i: 6 },
+          on: {
+            click: function($event) {
+              return _vm.$handleViewEvent($event)
+            }
+          }
+        },
+        [_vm._v("取消")]
+      )
     ],
     1
   )
