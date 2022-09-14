@@ -17,3 +17,13 @@ export const publicList = (value) => {
 		share_num: value.sharenum
 	}
 }
+export const topicList = (value) => {
+	return {
+		id: value.id,
+		cover: value.titlepic,
+		title: value.title,
+		desc: value.desc,
+		today_count: value.todaypost_count,
+		news_count: value.post_count
+	}
+}

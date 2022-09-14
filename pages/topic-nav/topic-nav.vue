@@ -14,7 +14,7 @@
 				:id="'tab' + index"
 				:class="tabIndex === index ? 'text-main font-lg font-weight-bold' : ''"
 				@click="changeTab(index)">
-					{{item.name}}
+					{{item.classname}}
 				</view>
 		</scroll-view>
 		<divider></divider>
@@ -36,6 +36,9 @@
 							<!-- 上拉加载 -->
 							<load-more :loadmore="item.loadmore"></load-more>
 						</template>
+						<template v-else-if="!item.firsLoad">
+							加载中。。。
+						</template>
 						<!-- 无数据 -->
 						<template v-else>
 							<no-thing></no-thing>
@@ -49,85 +52,6 @@
 <script>
 import topicList from '@/components/topic-detail/topic-list.vue'
 import LoadMore from '@/components/common/loadmore.vue';
-const dome = [
-	{
-		cover: '/static/demo/demo5.jpg',
-		title: 'JavaScript高级',
-		desc: '节流与防抖',
-		today_count: 10,
-		news_count: 0
-	},
-	{
-		cover: '/static/demo/demo5.jpg',
-		title: 'JavaScript高级',
-		desc: '节流与防抖',
-		today_count: 10,
-		news_count: 0
-	},
-	{
-		cover: '/static/demo/demo5.jpg',
-		title: 'JavaScript高级',
-		desc: '节流与防抖',
-		today_count: 10,
-		news_count: 0
-	},
-	{
-		cover: '/static/demo/demo5.jpg',
-		title: 'JavaScript高级',
-		desc: '节流与防抖',
-		today_count: 10,
-		news_count: 0
-	},
-	{
-		cover: '/static/demo/demo5.jpg',
-		title: 'JavaScript高级',
-		desc: '节流与防抖',
-		today_count: 10,
-		news_count: 0
-	},
-	{
-		cover: '/static/demo/demo5.jpg',
-		title: 'JavaScript高级',
-		desc: '节流与防抖',
-		today_count: 10,
-		news_count: 0
-	},
-	{
-		cover: '/static/demo/demo5.jpg',
-		title: 'JavaScript高级',
-		desc: '节流与防抖',
-		today_count: 10,
-		news_count: 0
-	},
-	{
-		cover: '/static/demo/demo5.jpg',
-		title: 'JavaScript高级',
-		desc: '节流与防抖',
-		today_count: 10,
-		news_count: 0
-	},
-	{
-		cover: '/static/demo/demo5.jpg',
-		title: 'JavaScript高级',
-		desc: '节流与防抖',
-		today_count: 10,
-		news_count: 0
-	},
-	{
-		cover: '/static/demo/demo5.jpg',
-		title: 'JavaScript高级',
-		desc: '节流与防抖',
-		today_count: 10,
-		news_count: 0
-	},
-	{
-		cover: '/static/demo/demo5.jpg',
-		title: 'JavaScript高级',
-		desc: '节流与防抖',
-		today_count: 10,
-		news_count: 0
-	},
-]
 export default {
 	components: { topicList, LoadMore },
 	data() {
@@ -135,16 +59,7 @@ export default {
 			scrollH: 0, // 除了头部 底部tabbar 之外的可视窗口的高度
 			scrollInto: "",  
 			tabIndex: 0,
-			tabBars:[
-				{name:'关注'},
-				{name:'推荐'},
-				{name:'体育'},
-				{name:'热点'},
-				{name:'财经'},
-				{name:'娱乐'},
-				{name:'军事'},
-				{name:'历史'},
-			],
+			tabBars:[],
 			pageList: []
 		};
 	},
@@ -178,33 +93,66 @@ export default {
 			this.tabIndex = tab.detail.current
 			// 滚动到指定元素
 			this.scrollInto = 'tab' + this.tabIndex
+			if(!this.pageList[this.tabIndex].flastLoad) {
+				this.getList()
+			}
 		},
 		// 获取数据
 		getData() {
-			let arr = []
-			let obj = {}
-			for(let i = 0; i < this.tabBars.length; i ++) {
-				obj = {
-					loadmore: '上拉加载更多',
-					list:[]
+			this.$H({
+				url: '/topicclass'
+			}).then(res => {
+				let {data: result} = res
+				this.tabBars = result.data.list
+				let arr = []
+				let obj = {}
+				for(let i = 0; i < this.tabBars.length; i ++) {
+					arr.push({
+						loadmore: '上拉加载更多',
+						list:[],
+						page: 1,
+						firstLoad: false  //第一次加载
+					})
 				}
-				if(i < 3) {
-					obj.list = dome
+				this.pageList = arr
+				if(this.tabBars.length > 0) {
+					this.getList()
 				}
-				arr.push(obj)
-			}
-			this.pageList = arr
+			})
+		},
+		// 获取分类列表
+		getList() {
+			const index = this.tabIndex
+			let id = this.tabBars[index].id
+			let page = this.pageList[index].page
+			this.$H({
+				url: `/topicclass/${id}/topic/${page}`,
+				method: 'GET'
+			}).then(res => {
+				let {data: result} = res
+				let list = result.data.list.map(value => {
+					return this.$U.topicList(value)
+				})
+				this.pageList[index].list = (page === 1) ? list : [...this.pageList[index].list, ...list],
+				this.pageList[index].loadmore = list.length < 10 ? '没有更多了' : '上拉加载更多'
+				if(page === 1) {
+					this.pageList[index].flastLoad = true
+				}
+			}).catch(err => {
+				if(!this.pageList[index].flastLoad) {
+					this.pageList[index].page --
+				}
+			})
+			
 		},
 		// 滚动到底部触发事件
 		loadmore(index) {
 			let item = this.pageList[index]
 			if(item.loadmore !== '上拉加载更多') return 
 			item.loadmore = '加载中...'
-			// 模拟发送请求
-			setTimeout(() => {
-				item.list = [...item.list,...item.list]
-				item.loadmore = '上拉加载更多'
-			}, 1000)
+			// 发送请求
+			item.page ++
+			this.getList()
 		},
 		// 监听顶部导航按钮的点击事件
 		onNavigationBarButtonTap() {

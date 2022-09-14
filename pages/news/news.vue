@@ -48,9 +48,9 @@
 							:autoplay="true" 
 							:interval="2000" 
 							:duration="1000">
-							<swiper-item>
+							<swiper-item v-for="(item, index) in swipers" :key="index">
 								<image 
-									src="/static/demo/datapic/11.jpg" 
+									:src="item.src" 
 									style="height: 300rpx;" 
 									class="w-100 rounded"></image>
 							</swiper-item>
@@ -141,93 +141,9 @@
 				scrollH: 500, // 中心区域高度
 				list: [], // 中心内容
 				loadText: '上拉加载更多', // 底部加载提示文本
-				hotCate: [
-					{name: '关注'},
-					{name: '推荐'},
-					{name: '体育'},
-					{name: '热点'},
-					{name: '财经'},
-					{name: '娱乐'},
-				],
-				subjectList: [
-					{
-						cover: '/static/demo/demo5.jpg',
-						title: 'JavaScript高级',
-						desc: '节流与防抖',
-						today_count: 10,
-						news_count: 0
-					},
-					{
-						cover: '/static/demo/demo5.jpg',
-						title: 'JavaScript高级',
-						desc: '节流与防抖',
-						today_count: 10,
-						news_count: 0
-					},
-					{
-						cover: '/static/demo/demo5.jpg',
-						title: 'JavaScript高级',
-						desc: '节流与防抖',
-						today_count: 10,
-						news_count: 0
-					},
-					{
-						cover: '/static/demo/demo5.jpg',
-						title: 'JavaScript高级',
-						desc: '节流与防抖',
-						today_count: 10,
-						news_count: 0
-					},
-					{
-						cover: '/static/demo/demo5.jpg',
-						title: 'JavaScript高级',
-						desc: '节流与防抖',
-						today_count: 10,
-						news_count: 0
-					},
-					{
-						cover: '/static/demo/demo5.jpg',
-						title: 'JavaScript高级',
-						desc: '节流与防抖',
-						today_count: 10,
-						news_count: 0
-					},
-					{
-						cover: '/static/demo/demo5.jpg',
-						title: 'JavaScript高级',
-						desc: '节流与防抖',
-						today_count: 10,
-						news_count: 0
-					},
-					{
-						cover: '/static/demo/demo5.jpg',
-						title: 'JavaScript高级',
-						desc: '节流与防抖',
-						today_count: 10,
-						news_count: 0
-					},
-					{
-						cover: '/static/demo/demo5.jpg',
-						title: 'JavaScript高级',
-						desc: '节流与防抖',
-						today_count: 10,
-						news_count: 0
-					},
-					{
-						cover: '/static/demo/demo5.jpg',
-						title: 'JavaScript高级',
-						desc: '节流与防抖',
-						today_count: 10,
-						news_count: 0
-					},
-					{
-						cover: '/static/demo/demo5.jpg',
-						title: 'JavaScript高级',
-						desc: '节流与防抖',
-						today_count: 10,
-						news_count: 0
-					},
-				]
+				hotCate: [],
+				swipers: [],
+				subjectList: []
 			}
 		},
 		onLoad() {
@@ -239,6 +155,9 @@
 			})
 			// 赋值数据
 			this.list = dome
+			this.getHotCate()
+			this.getSwipers()
+			this.getHotTopic()
 		},
 		methods: {
 			// 切换到发布页
@@ -247,7 +166,31 @@
 					url:'/pages/app-input/app-input'
 				})
 			},
-			// 改变顶部导航栏选项
+			// 获取热门分类
+			async getHotCate() {
+				const {data : res} = await this.$H({
+					url: '/topicclass'
+				})
+				this.hotCate = res.data.list
+			},
+			// 获取轮播图
+			async getSwipers() {
+				const {data : res} = await this.$H({
+					url: '/adsense/0'
+				})
+				this.swipers = res.data.list
+			},
+			// 获取热门话题
+			async getHotTopic() {
+				const {data : res} = await this.$H({
+					url: '/hottopic'
+				})
+				let list = res.data.list.map(value => {
+					return this.$U.topicList(value)
+				})
+				this.subjectList = list
+			},
+ 			// 改变顶部导航栏选项
 			changeIndex(index) {
 				this.tabIndex = index
 			},

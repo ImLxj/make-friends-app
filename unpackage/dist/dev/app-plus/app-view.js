@@ -1692,23 +1692,23 @@ var render = function() {
                         _i: 20
                       }
                     },
-                    [
-                      _c(
+                    _vm._l(_vm._$g(21, "f"), function(item, index, $22, $32) {
+                      return _c(
                         "v-uni-swiper-item",
-                        { attrs: { _i: 21 } },
+                        { key: item, attrs: { _i: "21-" + $32 } },
                         [
                           _c("v-uni-image", {
-                            staticClass: _vm._$g(22, "sc"),
+                            staticClass: _vm._$g("22-" + $32, "sc"),
                             staticStyle: { height: "300rpx" },
                             attrs: {
-                              src: "/static/demo/datapic/11.jpg",
-                              _i: 22
+                              src: _vm._$g("22-" + $32, "a-src"),
+                              _i: "22-" + $32
                             }
                           })
                         ],
                         1
                       )
-                    ],
+                    }),
                     1
                   ),
                   _c(
@@ -1716,11 +1716,11 @@ var render = function() {
                     { staticClass: _vm._$g(23, "sc"), attrs: { _i: 23 } },
                     [_vm._v("最近更新")]
                   ),
-                  _vm._l(_vm._$g(24, "f"), function(item, index, $22, $32) {
+                  _vm._l(_vm._$g(24, "f"), function(item, index, $23, $33) {
                     return [
                       _c("topic-list", {
                         key: item["k0"],
-                        attrs: { _i: "25-" + $32 }
+                        attrs: { _i: "25-" + $33 }
                       })
                     ]
                   })
@@ -5364,12 +5364,22 @@ var render = function() {
             _vm._l(_vm._$g(6, "f"), function(item, index, $21, $31) {
               return [
                 _vm._$g("7-" + $31, "i")
-                  ? [_c("common-list", { attrs: { _i: "8-" + $31 } })]
-                  : _vm._$g("9-" + $31, "e")
-                  ? [_c("topic-list", { attrs: { _i: "10-" + $31 } })]
-                  : [_c("user-list", { attrs: { _i: "12-" + $31 } })]
+                  ? [
+                      _c("common-list", { attrs: { _i: "8-" + $31 } }),
+                      _c("divider", { attrs: { _i: "9-" + $31 } })
+                    ]
+                  : _vm._$g("10-" + $31, "e")
+                  ? [
+                      _c("topic-list", { attrs: { _i: "11-" + $31 } }),
+                      _c("divider", { attrs: { _i: "12-" + $31 } })
+                    ]
+                  : [
+                      _c("user-list", { attrs: { _i: "14-" + $31 } }),
+                      _c("divider", { attrs: { _i: "15-" + $31 } })
+                    ]
               ]
-            })
+            }),
+            _c("load-more", { attrs: { _i: 16 } })
           ]
     ],
     2
@@ -5596,7 +5606,8 @@ __webpack_require__.r(__webpack_exports__);
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 var _commonList = _interopRequireDefault(__webpack_require__(/*! @/components/common/common-list.vue */ 7));
 var _userList = _interopRequireDefault(__webpack_require__(/*! @/components/user-list/user-list.vue */ 142));
-var _topicList = _interopRequireDefault(__webpack_require__(/*! @/components/topic-detail/topic-list.vue */ 68));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var _default =
+var _topicList = _interopRequireDefault(__webpack_require__(/*! @/components/topic-detail/topic-list.vue */ 68));
+var _loadmore = _interopRequireDefault(__webpack_require__(/*! @/components/common/loadmore.vue */ 19));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}var _default =
 {
 
   data: function data() {
@@ -5607,7 +5618,8 @@ var _topicList = _interopRequireDefault(__webpack_require__(/*! @/components/top
   components: {
     'commonList': _commonList.default,
     'userList': _userList.default,
-    'topicList': _topicList.default } };exports.default = _default;
+    'topicList': _topicList.default,
+    'loadMore': _loadmore.default } };exports.default = _default;
 
 /***/ }),
 /* 149 */
@@ -6329,7 +6341,9 @@ var render = function() {
                         }),
                         _c("load-more", { attrs: { _i: "10-" + $31 } })
                       ]
-                    : [_c("no-thing", { attrs: { _i: "12-" + $31 } })]
+                    : _vm._$g("11-" + $31, "e")
+                    ? [_vm._v("加载中。。。")]
+                    : [_c("no-thing", { attrs: { _i: "13-" + $31 } })]
                 ],
                 2
               )

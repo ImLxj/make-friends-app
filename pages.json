@@ -84,7 +84,7 @@
 		{
 			"path": "pages/search/search",
 			"style": {
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"app-plus": {
 					// 导航栏配置
 					"titleNView": {
@@ -127,7 +127,7 @@
 		{
 			"path" : "pages/topic-detail/topic-detail",
 			"style" : {
-				"enablePullDownRefresh": false,
+				"enablePullDownRefresh": true,
 				"app-plus": {
 					"titleNView": {
 						"type": "transparent", // 渐变颜色

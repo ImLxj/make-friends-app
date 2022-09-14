@@ -12,8 +12,8 @@
 				class="mx-1 font-sm rounded border px-2 bg-light my-1 animated" 
 				hover-class="pulse"
 				v-for="(item, index) in hotCate" :key="index"
-				@click="openDetail(item)">
-				{{ item.name }}
+				@click="openMore">
+				{{ item.classname }}
 			</view>
 		</view>
 	</view>
@@ -29,10 +29,6 @@
 					url: '/pages/topic-nav/topic-nav'
 				})
 			},
-			// 打开话题分类页
-			openDetail(detail) {
-				console.log("打开话题分类页", detail);
-			}
 		}
 	}
 </script>

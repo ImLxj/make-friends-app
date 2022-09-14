@@ -107,21 +107,32 @@
 				],
 				defaultList: [],
 				loadText1: '上拉加载更多',
+				page1: 1,
+				firstLoad1 : false,
 				newsList: [],
 				loadText2: '上拉加载更多',
+				firstLoad2: false,
+				page2: 2,
 			}
 		},
 		// 接收上个页面传递过来的参数
 		onLoad(value) {
 			if(value.detail) {
 				this.detailInfo = JSON.parse(value.detail)
+				uni.setNavigationBarTitle({
+					title: this.detailInfo.title
+				})
 			}
-			this.defaultList = dome
+			// 获取数据
+			this.getData()
 		},
 		methods: {
 			// 改变tab导航
 			changeTab(index) {
 				this.tabIndex = index
+				if(!this['firstLoad' + (index + 1)]) {
+					this.getData()
+				}
 			},
 			loading() {
 				let index = this.tabIndex
@@ -136,7 +147,42 @@
 						this.newsList = [...this.newsList, ...this.newsList]
 					}
 				}, 2000)
-			}
+			},
+			getData() {
+				let index = this.tabIndex + 1
+				let id = this.detailInfo.id
+				let page = this['page' + index]
+				this.$H({
+					url: `/topic/${id}/post/${page}`,
+					method: 'GET'
+				}).then(res => {
+					let {data: result} = res
+					let list = result.data.list.map(value => {
+						return this.$U.publicList(value)
+					})
+					if(this.tabIndex === 0) {
+						this.defaultList = (page === 1) ? [...list] : [...this.defaultList, ...list]
+					}else {
+						this.newsList = (page === 1) ? [...list] : [...this.newsList, ...list]
+					}
+					this['loadText' + index] = list.length < 10 ? '没有更多了' : '上拉加载更多'
+					// 上拉刷新
+					if(page === 1) {
+						this['firstLoad' + index] = true
+					}
+				}).catch(err => {
+
+				})
+			},
+			// 滚动到底部触发事件
+			loadmore() {
+				let index = this.tabIndex
+				if(this['loadText' + index] !== '上拉加载更多') return 
+				this['loadText' + index] = '加载中...'
+				// 发送请求
+				this['page' + index] ++
+				this.getList()
+			},
 		},
 		computed: {
 			// 判断级联
