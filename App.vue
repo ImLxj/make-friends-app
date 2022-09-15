@@ -3,6 +3,8 @@
 		onLaunch: function() {
 			console.log('App Launch')
 			this.$U.onNetWork()
+			// 初始化用户登录状态
+			this.$store.commit('initLogin')
 		},
 		onShow: function() {
 			console.log('App Show')

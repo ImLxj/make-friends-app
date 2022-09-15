@@ -7,7 +7,8 @@
 				:class="item.icon"
 				:style="'background:' + item.bgColor + ';'"
 				class="iconfont text-white rounded-circle flex align-center justify-center" 
-				style="width: 130rpx;height: 130rpx; font-size: 60rpx;">
+				style="width: 130rpx;height: 130rpx; font-size: 60rpx;"
+				@click="login(item)">
 			</view>
 		</view>
 	</view>
@@ -15,6 +16,12 @@
 
 <script>
 	export default {
+		props: {
+			back: {
+				type: Boolean,
+				default: false
+			}
+		},
 		data() {
 			return {
 				providerList: []
@@ -64,6 +71,51 @@
 					return value.name !== ''
 				})
 				return list 
+			}
+		},
+		methods: {
+			login(item) {
+				uni.login({
+				  provider: item.id,
+				  success: (loginRes) => {
+				    // console.log(loginRes.authResult);
+						uni.getUserInfo({
+							provider: item.id,
+							success:  (infoRes) => {
+								let userInfo = {
+									provider: item.id,
+									openid: infoRes.userInfo.openId,
+									expires_in: 0,
+									nickName: infoRes.userInfo.nickName,
+									avatarUrl: infoRes.userInfo.avatarUrl
+								}
+								// 发送登录请求
+								this.loginEvent(userInfo)
+							}
+						});
+				  }
+				});
+			},
+			loginEvent(data) {
+				this.$H({
+					url: '/user/otherlogin',
+					method: 'POST',
+					data
+				}).then(res => {
+					let {data: result} = res
+					this.$store.commit('login', this.$U.thirdPartyLogin(result.data))
+					if(this.back) {
+						uni.navigateBack({
+							delta: 1
+						})
+					}
+					uni.showToast({
+						url:'登录成功',
+						icon:"none"
+					})
+ 				}).catch(err => {
+					console.log(err);
+				})
 			}
 		}
 	}

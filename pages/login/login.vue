@@ -55,8 +55,9 @@
 				style="border-radius: 50rpx;"
 				:disabled="disabled"
 				:class="disabled ? 'bj-main-disabled' : ''"
+				:loading="loading"
 				@click="submit">
-				登录
+				{{loading ? '登录中' : '登录'}}
 			</button>
 		</view>
 		
@@ -75,7 +76,7 @@
 			<view style="height: 1rpx; width: 100rpx; background-color: #dddddd;"></view>
 		</view>
 		<!-- 第三方登录 -->
-		<other-login></other-login>
+		<other-login back></other-login>
 		<!-- 同意协议 -->
 		<view class="flex align-center justify-center">
 			<text style="color: #dddddd;">注册代表您同意</text>
@@ -96,11 +97,12 @@
 			return {
 				statusBarHeight: 0,
 				status: false, // 判断用什么方式登录
-				username: '',
-				password: '',
+				username: '13711111111',
+				password: '123456',
 				phone: '',
 				code: '',
-				codeTime: 0
+				codeTime: 0,
+				loading: false
 			}
 		},
 		onLoad() {
@@ -115,8 +117,8 @@
 			},
 			// 初始化表单
 			init() {
-				this.username = ''
-				this.password = ''
+				this.username = '13711111111'
+				this.password = '123456'
 				this.phone = ''
 				this.code = ''
 			},
@@ -141,14 +143,24 @@
 			
 			// 登录按钮
 			submit() {
-				// 表单验证, 
-				if(this.validate()) {
-					// 如果手机号是 正确的 则需要判断验证码是否正确
+				if(!this.status) {
+					this.loading = true
+					let url = '/user/login'
+					let data = {
+						username: this.username,
+						password: this.password
+					}
+					this.loginRequest(url, data)
 				}else {
-					// 如果手机号不正确 则提示用户重新输入
-					return
+					this.loading = true
+					if(!this.validate()) return
+					let url = '/user/phonelogin'
+					let data = {
+						phone: this.phone,
+						code: this.code
+					}
+					this.loginRequest(url, data)
 				}
-				// 发送请求
 			},
 			// 获取验证码
 			getCode() {
@@ -156,15 +168,55 @@
 				if(this.codeTime > 0) return
 				// 验证手机号
 				if(!this.validate()) return 
-				this.codeTime = 60
-				let timer = setInterval(() => {
-					if(this.codeTime >= 1) {
-						this.codeTime--
-					}else {
-						this.codeTime = 0
-						clearInterval(timer)
+				this.$H({
+					url: '/user/sendcode',
+					method: 'POST',
+					data: {
+						phone: this.phone
 					}
-				}, 1000)
+				}).then(res => {
+					let {data : result} = res
+					uni.showToast({
+						title: result.msg,
+						icon: 'none'
+					})
+					this.codeTime = 60
+					let timer = setInterval(() => {
+						if(this.codeTime >= 1) {
+							this.codeTime--
+						}else {
+							this.codeTime = 0
+							clearInterval(timer)
+						}
+					}, 1000)
+				}).catch(err => {
+					console.log(err);
+				})
+			},
+			// 登录请求
+			loginRequest(url, data) {
+				this.$H({
+					url,
+					method: 'POST',
+					data
+				}).then(res => {
+					this.loading = false
+					// 改变登录状态
+					let {data: result} = res
+					// 持久化存储
+					this.$store.commit('login', result.data)
+					// 提示跳转
+					uni.navigateBack({
+						delta: 1
+					})
+					uni.showToast({
+						title:'登录成功',
+						icon:'none'
+					})
+				}).catch(err => {
+					this.loading = false
+					console.log(err);
+				})
 			}
 		},
 		computed: {

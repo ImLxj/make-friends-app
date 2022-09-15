@@ -278,7 +278,15 @@
 				}
 			}
 		}
-	],
+		,{
+			"path" : "pages/user-safe/user-safe",
+			"style" :                                                                                    
+			{
+				"navigationBarTitleText": "账号与安全",
+				"enablePullDownRefresh": false
+			}
+		}
+  ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "社区交友",
