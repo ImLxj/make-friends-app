@@ -277,13 +277,19 @@
 					}
 				}
 			}
-		}
-		,{
+		},
+		{
 			"path" : "pages/user-safe/user-safe",
 			"style" :                                                                                    
 			{
 				"navigationBarTitleText": "账号与安全",
 				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/user-phone/user-phone",
+			"style": {
+				"navigationBarTitleText": "绑定手机号"
 			}
 		}
   ],

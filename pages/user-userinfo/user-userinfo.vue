@@ -55,6 +55,7 @@
 			<button 
 				type="primary" 
 				class="bj-main text-white" 
+				@click="submit"
 				style="border-radius: 50rpx;">
 				完成
 			</button>
@@ -74,6 +75,7 @@
 	let professionArray = ['IT', '其他', '学生']
 	import uniList from '@/components/uni-ui/uni-list/components/uni-list/uni-list.vue'
 	import mpvueCityPicker from '@/components/uni-ui/mpvue-citypicker/mpvueCityPicker.vue'
+	import {mapState} from 'vuex'
 	export default {
 		components: {
 			uniList,
@@ -92,6 +94,17 @@
 				pickerText: '请选择住址'
 			}
 		},
+		onLoad() {
+			let userinfo = this.user.userinfo
+			if(userinfo) {
+				this.username = this.user.username
+				this.sexNum = userinfo.sex
+				this.birthday = userinfo.birthday
+				this.pickerText = userinfo.path
+				this.emotionNum = userinfo.qg
+				this.professionText = userinfo.job
+			}
+		},
 		computed: {
 			sexText() {
 				return sexArray[this.sexNum]
@@ -101,7 +114,10 @@
 			},
 			professionText() {
 				return professionArray[this.professionNum]
-			}
+			},
+			...mapState({
+				user: state => state.user
+			})
 		},
 		// 当点击返回按钮关闭三级联动
 		onBackPress() {
@@ -167,6 +183,30 @@
 			// 打开三级联动
 			openPicker() {
 				this.$refs.mpvueCityPicker.show()
+			},
+			// 提交修改个人资料
+			submit() {
+				let editData = {
+						name: this.username,
+						sex: this.sexNum,
+						qg: this.emotionNum,
+						job: this.professionText,
+						birthday: this.birthday,
+						path: this.pickerText,
+					}
+				this.$H({
+					url: '/edituserinfo',
+					method: 'POST',
+					data: editData
+				},{
+					token: true
+				}).then(res => {
+					this.$store.commit('editUserinfo', {
+						key: 'username',
+						value: this.username
+					})
+					this.$store.commit('editUserdata', editData)
+				})
 			}
 		}
 	}

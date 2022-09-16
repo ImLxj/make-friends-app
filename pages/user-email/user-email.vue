@@ -1,14 +1,17 @@
 <template>
 	<view>
-		<input class="uni-input" type="text" v-model="email" placeholder="请输入邮箱"/>
-		<input class="uni-input" type="text" v-model="password" placeholder="请输入密码"/>
-		
+		<input 
+			class="uni-input" 
+			:disabled="user.email" 
+			type="text" 
+			v-model="email" 
+			placeholder="请输入邮箱"/>
 		<view class="py-2 px-3">
 			<button 
 				type="primary" 
 				class="bj-main text-white" 
 				style="border-radius: 50rpx;"
-				:disabled="disabled"
+				:disabled="disabled || user.email"
 				:class="disabled ? 'bj-main-disabled' : ''"
 				@click="submit">
 				提交
@@ -18,17 +21,25 @@
 </template>
 
 <script>
+	import { mapState } from 'vuex'
 	export default {
 		data() {
 			return {
-				email: '',
-				password: ''
+				email: ''
+			}
+		},
+		onLoad() {
+			if(this.user.email) {
+				this.email = this.user.email
 			}
 		},
 		computed: {
 			disabled() {
-				return this.email === '' || this.password === ''
-			}
+				return this.email === ''
+			},
+			...mapState({
+				user: state => state.user
+			})
 		},
 		methods: {
 			// 验证
@@ -47,7 +58,27 @@
 					})
 					return
 				}
-				console.log('绑定成功');
+				this.$H({
+					url: '/user/bindemail',
+					method: 'POST',
+					data: {
+						email: this.email
+					}
+				}, {
+					token: true
+				}).then(res => {
+					this.$store.commit('editUserinfo', {
+						key: 'email',
+						value: this.email
+					})
+					uni.navigateBack({
+						delta: 1
+					})
+					uni.showToast({
+						title: '绑定成功',
+						icon: "success"
+					})
+				})
 			}
 		}
 	}

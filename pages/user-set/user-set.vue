@@ -9,13 +9,6 @@
 					title="账号与安全" 
 					@click="open('user-safe')">
 				</uni-list-item>
-				<uni-list-item
-					:border="false" 
-					clickable
-					showArrow
-					@click="open('user-email')"
-					title="绑定邮箱">
-				</uni-list-item>
 				<uni-list-item 
 					:border="false" 
 					clickable
