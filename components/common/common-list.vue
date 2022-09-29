@@ -95,8 +95,28 @@ export default {
 		follow() {
 			// 权限验证
 			this.auth(() => {
-				// 向父组件传递参数
-				this.$emit('follow', this.index);
+				this.$H({
+					method: 'POST',
+					url: '/follow',
+					data: {
+						follow_id: this.item.user_id
+					}
+				},{token: true}).then(res => {
+					// 向父组件传递参数
+					// this.$emit('follow', this.item.user_id);
+					// 通知更新， 如果进入到用户发布消息的具体页面， 点击关注，列表当中的也要全部关注
+					uni.$emit('updateFollowOnSupport', {
+						type: 'follow',
+						data: {
+							user_id: this.item.user_id
+						}
+					})
+				}).catch(err => {
+					uni.showToast({
+						title:'关注失败',
+						icon:'none'
+					})
+				})
 			})
 		},
 		// 进入详情页

@@ -83,6 +83,20 @@ export default {
 		})
 		// 加载假数据，在页面更新之前
 		this.getData()
+		// 监听关注和顶踩操作
+		uni.$on('updateFollowOnSupport', (e) => {
+			switch(e.type) {
+				case "follow":
+					this.follow(e.data.user_id)
+					break;
+				default: 
+					break
+			}
+		})
+	},
+	onUnload() {
+		// 注销事件
+		uni.$off('updateFollowOnSupport')
 	},
 	methods: {
 		// 修改顶部选项卡
@@ -103,8 +117,14 @@ export default {
 				this.getList()
 			}
 		},
-		follow(index) {
-			this.pageList[this.tabIndex].list[index].isFollow = true;
+		follow(user_id) {
+			this.pageList.forEach(item => {
+				item.list.forEach(l => {
+					if(l.user_id === user_id) {
+						l.isFollow = true
+					}
+				})
+			})
 			// 成功弹框
 			uni.showToast({
 				title: '关注成功'

@@ -42,132 +42,6 @@
 	import topicList from '@/components/topic-detail/topic-list.vue'
 	import loadMore from '@/components/common/loadmore.vue'
 	// 测试数据
-	const dome1 = [
-		{
-			username: '王五', // 用户名
-			userpic: '/static/default.jpg', // 用户头像
-			newstime: '2022-8-28', // 用户更新时间
-			isFollow: false, // 是否关注
-			title: 'JS高级课', // 文章标题
-			titlepic: '/static/demo/datapic/27.jpg', // 文章图片
-			support: {
-				type: 'unsupport',
-				support_count: 1,
-				unsupport_count: 2
-			},
-			comment_count: 3,
-			share_num: 2
-		},
-		{
-			username: '李四', // 用户名
-			userpic: '/static/default.jpg', // 用户头像
-			newstime: '2022-8-28', // 用户更新时间
-			isFollow: false, // 是否关注
-			title: 'JS高级课', // 文章标题
-			titlepic: '', // 文章图片
-			support: {
-				type: 'support',
-				support_count: 1,
-				unsupport_count: 2
-			},
-			comment_count: 3,
-			share_num: 2
-		},
-		{
-			username: '王五', // 用户名
-			userpic: '/static/default.jpg', // 用户头像
-			newstime: '2022-8-28', // 用户更新时间
-			isFollow: false, // 是否关注
-			title: 'JS高级课', // 文章标题
-			titlepic: '/static/demo/datapic/27.jpg', // 文章图片
-			support: {
-				type: 'support',
-				support_count: 1,
-				unsupport_count: 2
-			},
-			comment_count: 3,
-			share_num: 2
-		}
-	]
-	const dome2 = [
-		{
-			cover: '/static/demo/demo5.jpg',
-			title: 'JavaScript高级',
-			desc: '节流与防抖',
-			today_count: 10,
-			news_count: 0
-		},
-		{
-			cover: '/static/demo/demo5.jpg',
-			title: 'JavaScript高级',
-			desc: '节流与防抖',
-			today_count: 10,
-			news_count: 0
-		},
-		{
-			cover: '/static/demo/demo5.jpg',
-			title: 'JavaScript高级',
-			desc: '节流与防抖',
-			today_count: 10,
-			news_count: 0
-		},
-		{
-			cover: '/static/demo/demo5.jpg',
-			title: 'JavaScript高级',
-			desc: '节流与防抖',
-			today_count: 10,
-			news_count: 0
-		},
-		{
-			cover: '/static/demo/demo5.jpg',
-			title: 'JavaScript高级',
-			desc: '节流与防抖',
-			today_count: 10,
-			news_count: 0
-		},
-		{
-			cover: '/static/demo/demo5.jpg',
-			title: 'JavaScript高级',
-			desc: '节流与防抖',
-			today_count: 10,
-			news_count: 0
-		},
-		{
-			cover: '/static/demo/demo5.jpg',
-			title: 'JavaScript高级',
-			desc: '节流与防抖',
-			today_count: 10,
-			news_count: 0
-		},
-		{
-			cover: '/static/demo/demo5.jpg',
-			title: 'JavaScript高级',
-			desc: '节流与防抖',
-			today_count: 10,
-			news_count: 0
-		},
-		{
-			cover: '/static/demo/demo5.jpg',
-			title: 'JavaScript高级',
-			desc: '节流与防抖',
-			today_count: 10,
-			news_count: 0
-		},
-		{
-			cover: '/static/demo/demo5.jpg',
-			title: 'JavaScript高级',
-			desc: '节流与防抖',
-			today_count: 10,
-			news_count: 0
-		},
-		{
-			cover: '/static/demo/demo5.jpg',
-			title: 'JavaScript高级',
-			desc: '节流与防抖',
-			today_count: 10,
-			news_count: 0
-		},
-	]
 	const dome3 = [
 		{
 			avatar: '/static/demo/userpic/2.jpg',
@@ -309,6 +183,15 @@
 			switch (this.type){
 				case 'post':
 					pageTitle = '帖子'
+					uni.$on('updateFollowOnSupport', (e) => {
+						switch(e.type) {
+							case "follow":
+								this.follow(e.data.user_id)
+								break;
+							default: 
+								break
+						}
+					})
 					break;
 				case 'topic':
 					pageTitle = '话题'
@@ -332,7 +215,24 @@
 				this.searchList = JSON.parse(list)
 			}
 		},
+		// 卸载事件
+		onUnload() {
+			if(this.type === 'post') {
+				uni.$off('updateFollowOnSupport')
+			}
+		},
 		methods: {
+			follow(user_id) {
+				this.searchData.forEach(item => {
+					if(item.user_id === user_id) {
+						item.isFollow = true
+					}
+				})
+				// 成功弹框
+				uni.showToast({
+					title: '关注成功'
+				});
+			},
 			// 监听顶部导航的button事件触发
 			searchEvent() {
 				// 隐藏软件盘
@@ -382,7 +282,6 @@
 						pageTitle = '用户'
 						break;
 				}
-				console.log(list);
 				this.searchData = this.refresh ? [...list] : [...this.searchData, ...list]
 				this.loadmore = list.length < 10 ? '没有更多了' : '上拉加载更多'
 				if(typeof callback === 'function') {

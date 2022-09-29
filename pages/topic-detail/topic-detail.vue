@@ -125,6 +125,19 @@
 			}
 			// 获取数据
 			this.getData()
+			// 监听关注和顶踩操作
+			uni.$on('updateFollowOnSupport', (e) => {
+				switch(e.type) {
+					case "follow":
+						this.follow(e.data.user_id)
+						break;
+					default: 
+						break
+				}
+			})
+		},
+		onUnload() {
+			uni.$off('updateFollowOnSupport')
 		},
 		methods: {
 			// 改变tab导航
@@ -147,6 +160,22 @@
 						this.newsList = [...this.newsList, ...this.newsList]
 					}
 				}, 2000)
+			},
+			follow(user_id) {
+				this.defaultList.forEach(item => {
+					if(item.user_id === user_id) {
+						item.isFollow = true
+					}
+				})
+				this.newsList.forEach(item => {
+					if(item.user_id === user_id) {
+						item.isFollow = true
+					}
+				})
+				// 成功弹框
+				uni.showToast({
+					title: '关注成功'
+				});
 			},
 			getData() {
 				let index = this.tabIndex + 1

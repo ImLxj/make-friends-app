@@ -22,7 +22,7 @@
 				</image>
 				<view class="flex flex-column flex-1">
 					<text class="font-md font-weight-bold text-dark">{{user.username}}</text>
-					<text class="font-sm text-muted">总帖子 10 今日发帖 0</text>
+					<text class="font-sm text-muted">总帖子 {{myData[0].num}} 今日发帖 {{myData[1].num}}</text>
 				</view>
 				<text class="iconfont icon-jinru"></text>
 			</view>
@@ -92,6 +92,9 @@
 				]
 			}
 		},
+		onShow() {
+			this.getCounts()
+		},
 		onNavigationBarButtonTap() {
 			uni.navigateTo({
 				url: '/pages/user-set/user-set'
@@ -102,6 +105,20 @@
 			openLogin() {
 				uni.navigateTo({
 					url:'/pages/login/login'
+				})
+			},
+			getCounts() {
+				this.$H({
+					method: 'GET',
+					url: `/user/getcounts/${this.user.id}`,
+				},{
+					token: true
+				}).then(res => {
+					let {data : result } = res.data
+					this.myData[0].num = result.post_count
+					this.myData[1].num = result.today_posts_count
+					this.myData[2].num = result.comments_count
+					this.myData[3].num = result.withfen_count
 				})
 			}
 		},

@@ -4384,7 +4384,14 @@ var render = function() {
                     _c(
                       "v-uni-text",
                       { staticClass: _vm._$g(11, "sc"), attrs: { _i: 11 } },
-                      [_vm._v("总帖子 10 今日发帖 0")]
+                      [
+                        _vm._v(
+                          "总帖子 " +
+                            _vm._$g(11, "t0-0") +
+                            " 今日发帖 " +
+                            _vm._$g(11, "t0-1")
+                        )
+                      ]
                     )
                   ],
                   1
@@ -9279,7 +9286,12 @@ var render = function() {
             {
               staticClass: _vm._$g(32, "sc"),
               staticStyle: { "border-radius": "50rpx" },
-              attrs: { type: "primary", _i: 32 }
+              attrs: { type: "primary", _i: 32 },
+              on: {
+                click: function($event) {
+                  return _vm.$handleViewEvent($event)
+                }
+              }
             },
             [_vm._v("完成")]
           )
@@ -11326,6 +11338,7 @@ var render = function() {
               }
             },
             [
+              _vm._v("98"),
               _c(
                 "uni-view",
                 {

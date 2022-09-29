@@ -3,7 +3,7 @@ export const publicList = (value) => {
 		username: value.user.username, // 用户名
 		userpic: value.user.userpic, // 用户头像
 		newstime: value.create_time, // 用户更新时间
-		isFollow: false, // 是否关注
+		isFollow: false, // 是否关注 
 		title: value.title, // 文章标题
 		titlepic: value.titlepic, // 文章图片
 		content: value.content,
@@ -14,7 +14,8 @@ export const publicList = (value) => {
 			unsupport_count: 2
 		},
 		comment_count: value.comment_count,
-		share_num: value.sharenum
+		share_num: value.sharenum,
+		user_id: value.user_id
 	}
 }
 export const topicList = (value) => {
